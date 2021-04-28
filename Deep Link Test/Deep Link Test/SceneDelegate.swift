@@ -46,7 +46,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            print(url)
+            
+            let urlString = url.absoluteString
+            
+            let component = urlString.components(separatedBy: "/")
+            
+            if component.count > 1, let pageName = component.last {
+                print(pageName)
+                
+                switch pageName {
+                case "second":
+                    navigateToSecondVC()
+                default:
+                    return
+                }
+            }
+        }
+    }
+    
+    func navigateToSecondVC() {
+        let storyBoard = UIStoryboard.init(name: "Main", bundle: nil)
+        
+        guard let secondPage = storyBoard.instantiateViewController(identifier: "SecondViewController") as? SecondViewController else {
+            return
+        }
+        
+        let navVC = self.window?.rootViewController as? UINavigationController
+        
+        navVC?.pushViewController(secondPage, animated: true)
+    }
 }
 
